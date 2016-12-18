@@ -1,22 +1,14 @@
 version: '2'
 services:
-  nginx:
-    image: dvranish/openvpn-nginx
-    env_file: ./nginx.env
-    ports:
-      - 80/tcp:80/tcp
-      - 443/tcp:443/tcp
-    volumes_from: files
+  files:
+    image: dvranish/openvpn-files
+    volumes:
+      - ../conf:/data/conf
+      - ../keys:/data/keys
+      - ../logs:/data/logs
   openvpn:
     image: dvranish/openvpn
     env_file: ./openvpn.vpn
     ports:
       - 1194/udp:1194/udp
     volumes_from: files
-  files:
-    image: dvranish/openvpn-files
-    volumes:
-      - ./conf/openvpn:/data/openvpn
-      - ./conf/nginx:/data/nginx
-      - ./keys/letsencrypt:/data/letsencrypt
-      - ./keys/openvpn:/data/openvpn/keys

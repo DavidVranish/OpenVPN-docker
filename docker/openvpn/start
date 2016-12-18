@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ ! -f /data/keys/openvpn/ca.crt ]; then
+	cd /usr/share/easy-rsa
+	source ./vars
+	./clean-all
+	./build-ca --batch --keysize 8192 ca
+	cp /usr/share/easy-rsa/keys/ca.crt /data/keys/openvpn
+fi
+
+if [ ! -f /data/keys/openvpn/server.crt ]; then
+	cd /usr/share/easy-rsa
+	./build-key-server --batch --keysize 8192 server
+	cp /usr/share/easy-rsa/keys/server.key /data/keys/openvpn
+	cp /usr/share/easy-rsa/keys/server.crt /data/keys/openvpn
+fi
+
+if [ ! -f /data/keys/openvpn/ta.key ]; then
+	openvpn --genkey --secret /data/keys/openvpn/ta.key
+fi
+
+if [ ! -f /data/keys/openvpn/dhparam.pem ]; then
+	openssl dhparam -out /data/keys/openvpn/dhparam.pem 1024
+fi
+
+exec /usr/sbin/openvpn /data/conf/openvpn/server.ovpn

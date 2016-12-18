@@ -1,0 +1,43 @@
+#!/bin/bash
+
+CLIENT_NAME=${1?"Username is Required"}
+
+# Create client key
+
+cd /usr/share/easy-rsa
+./build-key --batch --keysize 8192 ${CLIENT_NAME}
+cp /usr/share/easy-rsa/keys/${CLIENT_NAME}.key /data/keys/openvpn
+cp /usr/share/easy-rsa/keys/${CLIENT_NAME}.crt /data/keys/openvpn
+
+server=${SERVER_DNS}
+cacert=`cat /data/keys/openvpn/ca.crt`
+client_cert=`cat /data/keys/openvpn/${CLIENT_NAME}.crt`
+client_key=`cat /data/keys/openvpn/${CLIENT_NAME}.key`
+tls_key=`cat /data/keys/openvpn/ta.key`
+
+# Create client Config
+
+echo "client
+dev tun
+proto udp
+remote ${server} 1194
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+cipher AES-128-CBC
+comp-lzo
+verb 3
+key-direction 1
+<ca>
+${cacert}
+</ca>
+<cert>
+${client_cert}
+</cert>
+<key>
+${client_key}
+</key>
+<tls-auth>
+${tls_key}
+</tls-auth>" >> /data/conf/openvpn/${CLIENT_NAME}.ovpn

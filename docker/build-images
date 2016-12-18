@@ -1,0 +1,4 @@
+#!/bin/bash
+./files/build-image
+./openvpn/build-image
+#./nginx/build-image

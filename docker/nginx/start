@@ -1,0 +1,4 @@
+#!/bin/bash
+mkdir -p /data/conf/nginx
+mkdir -p /data/keys/nginx
+mkdir -p /data/logs/nginx
