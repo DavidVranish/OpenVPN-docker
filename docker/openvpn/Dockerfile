@@ -6,19 +6,18 @@ RUN apt-get install -y apt-utils
 RUN apt-get install -y openvpn \
     easy-rsa
 
-RUN mkdir -p /data/conf/openvpn
-RUN mkdir -p /data/keys/openvpn
-RUN mkdir -p /data/logs/openvpn
+RUN mkdir -p /root/bin
+RUN mkdir -p /root/conf
 
-COPY ./start /data
-COPY ./adduser /data
-COPY ./rmuser /data
-COPY ./server.ovpn /data/conf/openvpn
+COPY ./bin/start /root/bin
+COPY ./bin/adduser /root/bin
+COPY ./bin/rmuser /root/bin
+COPY ./conf/server.ovpn /root/conf
 
-RUN chmod +x /data/start
-RUN chmod +x /data/adduser
-RUN chmod +x /data/rmuser
+RUN chmod +x /root/bin/start
+RUN chmod +x /root/bin/adduser
+RUN chmod +x /root/bin/rmuser
 
 EXPOSE 1194
 
-CMD /data/start
+CMD /root/bin/start

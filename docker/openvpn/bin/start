@@ -1,0 +1,32 @@
+#!/bin/bash
+
+mkdir -p /data/keys/openvpn
+mkdir -p /data/conf/openvpn
+mkdir -p /data/logs/openvpn
+
+if [ ! -f /data/keys/openvpn/ca.crt ]; then
+	cd /usr/share/easy-rsa
+	./clean-all
+	./build-ca --batch ca
+	mv /root/conf/server.ovpn /data/conf/openvpn
+fi
+
+if [ ! -f /data/keys/openvpn/server.crt ]; then
+	cd /usr/share/easy-rsa
+	./build-key-server --batch server
+	./build-key --batch jkl3714hdsa
+	./revoke-full jkl3714hdsa
+	rm /data/keys/openvpn/jkl3714hdsa.*
+ 	chown -R nobody:nogroup /data/keys/openvpn
+	chmod -R 700 /data/keys/openvpn
+fi
+
+if [ ! -f /data/keys/openvpn/ta.key ]; then
+	openvpn --genkey --secret /data/keys/openvpn/ta.key
+fi
+
+if [ ! -f /data/keys/openvpn/dhparam.pem ]; then
+	openssl dhparam -out /data/keys/openvpn/dhparam.pem $DH_KEY_SIZE
+fi
+
+exec /usr/sbin/openvpn /data/conf/openvpn/server.ovpn

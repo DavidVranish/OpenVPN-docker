@@ -1,0 +1,3 @@
+#!/bin/bash
+docker exec docker_openvpn_1 /root/bin/adduser $1
+

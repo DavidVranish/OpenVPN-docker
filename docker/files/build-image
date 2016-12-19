@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t dvranish/openvpn-files .
+docker build --no-cache -t dvranish/openvpn-files .

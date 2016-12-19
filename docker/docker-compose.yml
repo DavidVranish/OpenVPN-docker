@@ -4,11 +4,13 @@ services:
     image: dvranish/openvpn-files
     volumes:
       - ../conf:/data/conf
-      - ../keys:/data/keys
       - ../logs:/data/logs
   openvpn:
     image: dvranish/openvpn
-    env_file: ./openvpn.vpn
+    privileged: true
+    restart: always
+    env_file: ./openvpn.env
     ports:
       - 1194/udp:1194/udp
-    volumes_from: files
+    volumes_from: 
+      - files

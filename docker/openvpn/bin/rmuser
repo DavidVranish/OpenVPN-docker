@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /usr/share/easy-rsa
+./revoke-full $1
+rm /data/keys/openvpn/$1.*
+rm /data/conf/openvpn/$1.ovpn

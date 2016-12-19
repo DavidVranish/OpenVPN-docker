@@ -1,0 +1,2 @@
+#!/bin/bash
+docker exec docker_openvpn_1 /root/bin/rmuser $1

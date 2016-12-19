@@ -1,9 +1,8 @@
 FROM busybox
 
-RUN mkdir /data
-RUN mkdir /data/conf
-RUN mkdir /data/keys
-RUN mkdir /data/logs
+RUN mkdir -p /data/conf/openvpn
+RUN mkdir -p /data/keys/openvpn
+RUN mkdir -p /data/log/openvpn
 
 VOLUME /data/conf
 VOLUME /data/keys
